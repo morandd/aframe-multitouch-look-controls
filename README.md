@@ -1,12 +1,11 @@
 # aframe-multitouch-look-controls
 
-This is an AFrame free-look camera controller for touchscreen devices.
+This is an AFrame free-look camera controller for touchscreen devices. This controller only listens to touch events.
 
-This controller only listens to touch events. The gestures are:
-* single touch drag for pich and yaw
-* two finger drag to dolly left/right and up/down
-* pinch to zoom (implemented as dolly)
-, not changing the FOV)
+The gestures are:
+* Single touch drag for pich and yaw
+* Two finger drag to dolly left/right (perpendicular to look direction) and up/down
+* Pinch to zoom (implemented as dolly)
 
 The default AFrame camera controlls support touch to yaw, but not the other gestures.
 
@@ -25,13 +24,11 @@ yrange | Maximum, or min/max, dolly distance from starting point along Y axis | 
 zrange | Maximum, or min/max, dolly distance from starting point along Z axis | 5
 
 the `[x|y|z]range` can be specified as a single number or as a pair of numbers. A single value means the range is
-bounded as _x&plusmn;xrange_ and a pair of values means the bounds will be [x-xrange[0] - x+xrange[1]]. 
+bounded as _x&plusmn;xrange_, and a pair of values means the bounds will be [x-xrange[0] - x+xrange[1]]. 
 
 # Using #
 
-Include in page and attch to a camera. I have been using this component with [dans-camera-juggler](https://morandd.github.io/dans-aframe-camera-juggler/).
-
-See the [Example](https://morandd.github.io/aframe-multitouch-look-controls/example/)
+Include in page and attch to a camera. I have been using this component with [dans-camera-juggler](https://morandd.github.io/dans-aframe-camera-juggler/). It's probably best to look at the [Example](https://morandd.github.io/aframe-multitouch-look-controls/example/)
 
 ```
 <script src="https://morandd.github.io/aframe-multitouch-look-controls/multitouch-look-controls.js"></script>
