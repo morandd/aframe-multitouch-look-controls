@@ -49,10 +49,13 @@ AFRAME.registerComponent('multitouch-look-controls', {
 
   update: function (oldData) {
     var data = this.data;
+
+    // Toggle enable/disabled
     if (oldData && data.enabled !== oldData.enabled) {
       this.setEnabled(data.enabled);
     }
     if (!data.enabled) { return; }
+
     if (oldData) {
       this.pitchObject.rotation.set(0, 0, 0);
       this.yawObject.rotation.set(0, 0, 0);
