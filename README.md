@@ -1,13 +1,14 @@
 # aframe-multitouch-look-controls
 
-This is an AFrame free-look camera controller for touchscreen devices. This controller only listens to touch events.
+This is an AFrame free-look camera controller for touchscreen devices. 
 
 The gestures are:
 * Single touch drag for pich and yaw
 * Two finger drag to dolly left/right (perpendicular to look direction) and up/down
 * Pinch to zoom (implemented as dolly)
 
-The default AFrame camera controlls support touch to yaw, but not the other gestures.
+This controller only listens to touch events.
+The default AFrame camera, using look-controls, supports touch to yaw, but not the other gestures.
 
 The way I've used this so far is to create a new camera, with just this controller, then use [dans-camera-juggler](https://github.com/morandd/dans-aframe-camera-juggler) to activate that camera when on mobile.
 
