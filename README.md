@@ -9,7 +9,7 @@ The gestures are:
 
 The default AFrame camera controlls support touch to yaw, but not the other gestures.
 
-The way I've used this so far is to create a new camera, with just this controller, then use [dans-camera-juggler](https://morandd.github.io/dans-aframe-camera-juggler/) to activate that camera when on mobile.
+The way I've used this so far is to create a new camera, with just this controller, then use [dans-camera-juggler](https://github.com/morandd/dans-aframe-camera-juggler) to activate that camera when on mobile.
 
 
 # API #
@@ -28,7 +28,9 @@ bounded as _x&plusmn;xrange_, and a pair of values means the bounds will be [x-x
 
 # Using #
 
-Include in page and attch to a camera. I have been using this component with [dans-camera-juggler](https://morandd.github.io/dans-aframe-camera-juggler/). It's probably best to look at the [Example](https://morandd.github.io/aframe-multitouch-look-controls/example/)
+Include the <script> tag and add this component to a camera entity.
+
+I've been using this component with [dans-camera-juggler](https://github.com/morandd/dans-aframe-camera-juggler). It's probably best to look at the [Example](https://morandd.github.io/aframe-multitouch-look-controls/example/)
 
 ```
 <script src="https://morandd.github.io/aframe-multitouch-look-controls/multitouch-look-controls.js"></script>
