@@ -1,15 +1,16 @@
-# aframe-multitouch-look-controls
+# multitouch-look-controls
 
-This is an AFrame free-look camera controller for touchscreen devices. This controller only listens to touch events.
+This is an AFrame free-look camera controller for touchscreen devices. It will automatically switch over to a normal AFrame `look-controls` on desktop an in VR/HMD mode, and thus can be used as a drop-in replacement for look-controls.
 
-The gestures are:
+The touch gestures are:
 * Single touch drag for pich and yaw
 * Two finger drag to dolly left/right (perpendicular to look direction) and up/down
 * Pinch to zoom (implemented as dolly)
 
-The default AFrame camera controlls support touch to yaw, but not the other gestures.
+The default AFrame camera controls support touch to yaw, but not the other gestures.
 
-The way I've used this so far is to create a new camera, with just this controller, then use [dans-camera-juggler](https://morandd.github.io/dans-aframe-camera-juggler/) to activate that camera when on mobile.
+On desktop and in VR mode (between `enter-vr` and `exit-vr` events) this controls pauses itself and switches to a look-controls on the current camera. This means it listens for mouse input and deviceorientation events. 
+
 
 
 # API #
@@ -28,7 +29,9 @@ bounded as _x&plusmn;xrange_, and a pair of values means the bounds will be [x-x
 
 # Using #
 
-Include in page and attch to a camera. I have been using this component with [dans-camera-juggler](https://morandd.github.io/dans-aframe-camera-juggler/). It's probably best to look at the [Example](https://morandd.github.io/aframe-multitouch-look-controls/example/)
+Include in page, then use as a drop-in replacement for look-controls.
+
+You can optionally provide `look-controls` on the camera with specific parameter settings. If none is provided a new `look-controls` with default settings will be created automatically. This usually works fine.
 
 ```
 <script src="https://morandd.github.io/aframe-multitouch-look-controls/multitouch-look-controls.js"></script>
@@ -36,4 +39,9 @@ Include in page and attch to a camera. I have been using this component with [da
 ...
 <a-entity camera multitouch-look-controls></a-entity>
 ```
+
+You can also explicitly set your own look-controls parameters, e.g. `<a-entity camera multitouch-look-controls look-controls="standing:false"></a-entity>`
+
+
+
 

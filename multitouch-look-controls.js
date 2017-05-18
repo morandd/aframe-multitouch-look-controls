@@ -25,27 +25,89 @@ AFRAME.registerComponent('multitouch-look-controls', {
   },
 
   init: function () {
-    var sceneEl = this.el.sceneEl;
 
-    this.data.maxPitchRad = THREE.Math.degToRad( this.data.maxPitch );
-    this.data.minPitchRad = THREE.Math.degToRad( this.data.minPitch );
+    // Find the look-controls on this camera, or create if it doesn't exist.
+    this.lookControls = null;
+    if (this.el.components["look-controls"]) {
+      this.lookControls = this.el.components["look-controls"];
+    } else {
+      this.el.setAttribute('look-controls','');
+      this.lookControls = this.el.components["look-controls"];
+    }
+    this.lookControls.pause();
+    this.removeEventListeners();
 
-    this.pitchObject = new THREE.Object3D();
-    this.yawObject = new THREE.Object3D();
-    this.yawObject.position.y = 10;
-    this.yawObject.add(this.pitchObject);
 
-    this.bounds = {};
-    this.bounds.x = [-1, 1];
-    this.bounds.y = [-1, 1];
-    this.bounds.z = [-1, 1];
 
-    this.dollyObject = new THREE.Object3D();
+    /*
+     On desktop mode, just downgrade ourselves to a normal look-control
+     */
+    if (!AFRAME.utils.device.isMobile()){
+      this.data.enabled = false;
+      this.setEnabled(false);
+      this.lookControls.play();
+      this.pause();
 
-    //this.bindMethods();
-    this.setEnabled(this.data.enabled);
+
+    } else {
+      /*
+       * On mobile, we behave normally, except we also set up listeners so we morph to/from normal look-controsl on enter-vr/exit-vr event
+       */
+      var sceneEl = this.el.sceneEl;
+
+      this.data.maxPitchRad = THREE.Math.degToRad( this.data.maxPitch );
+      this.data.minPitchRad = THREE.Math.degToRad( this.data.minPitch );
+
+      this.pitchObject = new THREE.Object3D();
+      this.yawObject = new THREE.Object3D();
+      this.yawObject.position.y = 10;
+      this.yawObject.add(this.pitchObject);
+
+      this.bounds = {};
+      this.bounds.x = [-1, 1];
+      this.bounds.y = [-1, 1];
+      this.bounds.z = [-1, 1];
+
+      this.dollyObject = new THREE.Object3D();
+
+      //this.bindMethods();
+      this.setEnabled(this.data.enabled);
+
+      // Attach listeners to pause myself on enter-vr and resume myself on exit-vr
+      this.el.sceneEl.addEventListener('enter-vr', this.handleEnterVRMobile.bind(this));
+      this.el.sceneEl.addEventListener('exit-vr', this.handleExitVRMobile.bind(this));
+
+    }
 
   },
+
+  handleEnterVRMobile: function(e) {
+    this.setEnabled(false);
+    this.pause();
+    // Ocassionally the initial view in VR does not point towards 0,0,0. I am not sure how to change the intial orientation of VR mode.
+    this.el.setAttribute('rotation','0 0 0');
+    this.lookControls.play();
+  },
+  handleExitVRMobile: function(e){
+    this.setEnabled(true);
+    this.lookControls.pause();
+
+    // Resume the orientation we had before entering VR:
+    this.el.setAttribute('rotation','0 0 0'); // undo the rotations from VR mode
+    this.updateRotationAndPosition();
+
+    this.play();
+  },
+
+  play: function () {
+    this.addEventListeners();
+  },
+
+  pause: function () {
+    this.removeEventListeners();
+  },
+
+
 
   update: function (oldData) {
     var data = this.data;
@@ -54,7 +116,8 @@ AFRAME.registerComponent('multitouch-look-controls', {
     if (oldData && data.enabled !== oldData.enabled) {
       this.setEnabled(data.enabled);
     }
-    if (!data.enabled) { return; }
+    if (!data.enabled) return;
+
 
     if (oldData) {
       this.pitchObject.rotation.set(0, 0, 0);
@@ -92,6 +155,9 @@ AFRAME.registerComponent('multitouch-look-controls', {
     //this.updatePosition();
   },
 
+  /*
+   * setEnabled just turns on the hand grab cursor. 
+   */
   setEnabled: function (enabled) {
     var sceneEl = this.el.sceneEl;
 
@@ -117,16 +183,8 @@ AFRAME.registerComponent('multitouch-look-controls', {
     }
   },
 
-  play: function () {
-    this.addEventListeners();
-  },
-
-  pause: function () {
-    this.removeEventListeners();
-  },
-
   tick: function (t) {
-    this.update();
+    if (this.data.enabled) this.update();
   },
 
   remove: function () {
@@ -140,6 +198,8 @@ AFRAME.registerComponent('multitouch-look-controls', {
   },
 
 
+
+
   addEventListeners: function () {
     var sceneEl = this.el.sceneEl;
     var canvasEl = sceneEl.canvas;
@@ -151,7 +211,7 @@ AFRAME.registerComponent('multitouch-look-controls', {
 
     // listen for canvas to load.
     if (!canvasEl) {
-      sceneEl.addEventListener('render-target-loaded', bind(this.addEventListeners, this));
+      sceneEl.addEventListener('render-target-loaded', this.addEventListeners.bind(this));
       return;
     }
 
@@ -161,7 +221,11 @@ AFRAME.registerComponent('multitouch-look-controls', {
     window.addEventListener('touchend', this.onTouchEnd.bind(this));
   },
 
+
+
+
   removeEventListeners: function () {
+
     var sceneEl = this.el.sceneEl;
     var canvasEl = sceneEl && sceneEl.canvas;
     if (!canvasEl) { return; }
