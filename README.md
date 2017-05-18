@@ -11,8 +11,6 @@ The default AFrame camera controls support touch to yaw, but not the other gestu
 
 On desktop and in VR mode (between `enter-vr` and `exit-vr` events) this controls pauses itself and switches to a look-controls on the current camera. This means it listens for mouse input and deviceorientation events. 
 
-
-
 # API #
 
 Attribute | Description | Default
