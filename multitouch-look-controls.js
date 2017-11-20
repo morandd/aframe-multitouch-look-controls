@@ -19,7 +19,7 @@ AFRAME.registerComponent('multitouch-look-controls', {
     enabled: {default: true},
     allowRotation: {default: true},
     createLookControls: {default: true},
-    invertY: {default:false},
+    invertRotation: {default:false},
     maxPitch: { type: 'number', default: 15},
     minPitch: { type: 'number', default: -20},
     xrange: { type: 'string', default: '5'},
@@ -349,7 +349,12 @@ AFRAME.registerComponent('multitouch-look-controls', {
       var deltaY = 2 * Math.PI * (e.touches[0].pageX - this.touchStart.x) / this.el.sceneEl.canvas.clientWidth;
       var deltaX = 2 * Math.PI * (e.touches[0].pageY - this.touchStart.y) / this.el.sceneEl.canvas.clientHeight;
 
-      this.yawObject.rotation.y -= (this.data.invertY ? -deltaY : deltaY) * 0.2;
+      if (this.data.invertY) {
+        deltaY = -deltaY;
+        deltaX = -deltaX;
+      }
+
+      this.yawObject.rotation.y -= deltaY * 0.2;
       this.pitchObject.rotation.x -= deltaX * 0.25;
       this.pitchObject.rotation.x = Math.min(this.data.maxPitchRad, Math.max(this.data.minPitchRad, this.pitchObject.rotation.x)); // Constrain pitch angles
 
