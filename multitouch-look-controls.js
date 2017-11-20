@@ -349,7 +349,7 @@ AFRAME.registerComponent('multitouch-look-controls', {
       var deltaY = 2 * Math.PI * (e.touches[0].pageX - this.touchStart.x) / this.el.sceneEl.canvas.clientWidth;
       var deltaX = 2 * Math.PI * (e.touches[0].pageY - this.touchStart.y) / this.el.sceneEl.canvas.clientHeight;
 
-      if (this.data.invertY) {
+      if (this.data.invertRotation) {
         deltaY = -deltaY;
         deltaX = -deltaX;
       }
