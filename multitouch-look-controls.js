@@ -16,7 +16,10 @@ AFRAME.registerComponent('multitouch-look-controls', {
   dependencies: ['position', 'rotation'],
 
   schema: {
-    enabled: {default: true}, 
+    enabled: {default: true},
+    allowRotation: {default: true},
+    createLookControls: {default: true},
+    invertRotation: {default:false},
     maxPitch: { type: 'number', default: 15},
     minPitch: { type: 'number', default: -20},
     xrange: { type: 'string', default: '5'},
@@ -30,9 +33,13 @@ AFRAME.registerComponent('multitouch-look-controls', {
     this.lookControls = null;
     if (this.el.components["look-controls"]) {
       this.lookControls = this.el.components["look-controls"];
-    } else {
+    } else if (this.data.createLookControls) {
       this.el.setAttribute('look-controls','');
       this.lookControls = this.el.components["look-controls"];
+    } else {
+      this.lookControls = {}; // use stub object
+      this.lookControls.pause = function() {};
+      this.lookControls.play = function() {};
     }
     this.lookControls.pause();
     this.removeEventListeners();
@@ -335,8 +342,17 @@ AFRAME.registerComponent('multitouch-look-controls', {
 
     if (e.touches.length == 1 ) {
 
+      if (!this.data.allowRotation) {
+        return;
+      }
+
       var deltaY = 2 * Math.PI * (e.touches[0].pageX - this.touchStart.x) / this.el.sceneEl.canvas.clientWidth;
       var deltaX = 2 * Math.PI * (e.touches[0].pageY - this.touchStart.y) / this.el.sceneEl.canvas.clientHeight;
+
+      if (this.data.invertRotation) {
+        deltaY = -deltaY;
+        deltaX = -deltaX;
+      }
 
       this.yawObject.rotation.y -= deltaY * 0.2;
       this.pitchObject.rotation.x -= deltaX * 0.25;

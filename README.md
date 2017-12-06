@@ -14,6 +14,9 @@ AFrame's default look-controls support touch to yaw, but not the other touch ges
 Attribute | Description | Default
 --- | --- | ---
 enabled | Is the controller enabled or not? | true
+allowRotation | Should this controller rotate object | true
+createLookControls | Should this controller create look-controls if it is missing on the element | true
+invertRotation | Is the rotation direction inverted | false
 maxPitch | Maximum pitch up angle, in degrees | 15
 minPitch | Maximum pitch down angle, in degrees | -20
 xrange | Maximum, or min/max, dolly distance from starting point along X axis | 5
