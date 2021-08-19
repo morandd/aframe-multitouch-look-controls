@@ -12,6 +12,7 @@ AFrame's default look-controls support touch to yaw, but not the other touch ges
 # Updates
 The original developer (morandd) is not actively maintaining this project. Pull requests are welcome and will be merged in. 
 If someone else would like to take ownership of this module just let me know and I will update this README to direct readers to your new repo.
+For example, this project has made some updates: https://github.com/traleven/aframe-multitouch-look-controls
 
 # API #
 
