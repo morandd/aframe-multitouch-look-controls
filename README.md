@@ -1,3 +1,16 @@
+
+
+# This project is no longer maintained
+This repo may still work, but it is recommended to use one of the forked versions. Some forked versions have offered fixes and enhancements.
+
+
+
+
+
+
+
+
+
 # multitouch-look-controls
 
 This is an AFrame free-look camera controller for touchscreen devices. This controller only listens to touch events, however on desktops and in VR mode it will automatically switch over to a normal AFrame `look-controls`, meaning it will listen to mouse and deviceorientation events. Thus, this controller can be used as a drop-in replacement for look-controls.
